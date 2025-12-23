@@ -1,5 +1,5 @@
 import math
-
+import random
 
 def is_prime(x):
     if x <= 1:
@@ -46,21 +46,28 @@ def encryption(m, public_key):
             encrypted_data += " "
         else:
             x1 = convert_str_to_int(x)
-            data = (pow(x1,public_key[0], public_key[1]))
-            x1 = convert_int_to_str(data % 26)
-            encrypted_data += x1
+            data = (pow(x1,public_key[0],public_key[1]))%25
+            data = convert_int_to_str(data)
+            x1 = str(data)
+            # x1 = convert_int_to_str(data % 26)
+            encrypted_data += x1+','
     return encrypted_data
 
-    # encrypted_data = []
-    # for x in m:
-    #     if x == " ":
-    #         encrypted_data.append(" ")
-    #     else:
-    #         x1 = convert_str_to_int(x)
-    #         data = pow(x1, public_key[0], public_key[1])
-    #         encrypted_data.append(str(data))  # store full encrypted int
-    # return " ".join(encrypted_data)
+#     e, n = public_key
+#     encrypted_numbers = []
+#     for ch in m:
+#         if ch == " ":
+#             encrypted_numbers.append(" ")  # marker for space
+#         else:
+#             m = ord(ch) % n
+#             c = pow(m, e, n)
+#             encrypted_numbers.append(str(c))
+#     return ",".join(encrypted_numbers)
 
+# def encryption(message, public_key):
+#     e, n = public_key
+#     ciphertext = [pow(ord(ch) % n, e, n) for ch in message]
+#     return ciphertext
 
 def convert_str_to_int(x):
     return ord(x) - ord('a')
@@ -79,37 +86,46 @@ def decryption(c, private_key):
     for x in c:
         if x == " ":
             decrypted_data += " "
+        elif x == ",":
+            continue
         else:
             x1 = convert_str_to_int(x)
             data = (pow(x1, private_key[0], private_key[1]))
-            x1 = convert_int_to_str(data % 26)
+            x1 = convert_int_to_str(data % 25)
             decrypted_data += x1
     return decrypted_data
+#
+#     d, n = private_key
+#     decrypted_data = ""
+#     for token in c.split(","):
+#         if token == "":
+#             continue
+#         elif token == " ":
+#             decrypted_data += " "
+#         else:
+#             c = int(token)
+#             m = pow(c, d, n)
+#             decrypted_data += chr(m)
+#     return decrypted_data
 
-    # decrypted_data = []
-    # for x in c:
-    #     if x == " ":
-    #         decrypted_data += " "
-    #     else:
-    #         x1 = int(x)
-    #         data = pow(x1, private_key[0], private_key[1])
-    #         decrypted_data.append(str(data))
-    # return decrypted_data
-
+# def decryption(ciphertext, private_key):
+#     d, n = private_key
+#     plaintext_chars = [chr(pow(c, d, n)) for c in ciphertext]
+#     return "".join(plaintext_chars)
 
 def file_decryption():
     pass
 
 
 def rsa():
-    x = int(input("Enter First number:"))
+    x = 5
     if is_prime(x):
         pass
     else:
         x = make_prime(x)
     print(f"x:{x}")
 
-    y = int(input("Enter Second number:"))
+    y = 11
     if is_prime(y):
         pass
     else:
@@ -126,7 +142,9 @@ def rsa():
     # print(f"y:{y}")
 
     e = co_prime(n2)
+    print(e)
     d = value_finder(e, n2)
+    print(d)
 
     public_key = [e, n1]
     private_key = [d, n1]

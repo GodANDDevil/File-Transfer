@@ -1,8 +1,9 @@
 import socket
 import RSA
+import json
 
 if __name__ == "__main__":
-    host = ""
+    host = "127.0.0.1"
     port = 8080
     number_clients = int(input("Enter the nuber of Clients:"))
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -11,13 +12,12 @@ if __name__ == "__main__":
     connection = []
     print("Initiating clients")
 
-    #loop
     for i in range(number_clients):
         conn = sock.accept()
         connection.append(conn)
         print("Connected with Client ",i+1)
 
-    fileno = 0
+    fileno = 1
     idx = 0
     for conn in connection:
         idx += 1
